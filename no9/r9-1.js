@@ -21,14 +21,46 @@
   var root = this,
       interpolations = root.interpolations = {};
 
-  interpolations.linear = function(p1, p2) {
-    var x1 = p1.x,
-        y1 = p1.y,
-        x2 = p2.x,
-        y2 = p2.y;
+  interpolations.linear = function(dataPoints) {
+    function linear2(p1, p2) {
+      var x1 = p1.x,
+          y1 = p1.y,
+          x2 = p2.x,
+          y2 = p2.y;
 
+      return function(x) {
+        return (y1 * (x - x2) - y2 * (x - x1)) / (x1 - x2);
+      };
+    }
+
+    var length = dataPoints.length,
+        table,
+        tableLength;
+
+    table = (function() {
+      var table = [],
+          previousPoint,
+          currentPoint,
+          i;
+      for (i = 1; i < length; i++) {
+        previousPoint = dataPoints[i - 1];
+        currentPoint = dataPoints[i];
+
+        table.push({
+          endX: currentPoint.x,
+          func: linear2(previousPoint, currentPoint)
+        });
+      }
+      return table;
+    })();
+
+    tableLength = table.length;
     return function(x) {
-      return (y1 * (x - x2) - y2 * (x - x1)) / (x1 - x2);
+      var i;
+      for (i in table) {
+        if (x <= table[i].endX) return table[i].func(x);
+      }
+      return table[tableLength - 1].func(x);
     };
   };
 
@@ -41,26 +73,26 @@
       mathtool = root.mathtool,
       interpolations = root.interpolations,
       section,
+      dataPoints,
       targetFunction,
-      p1,
-      p2,
       interpolationFunction,
-      trueValues;
+      trueValues,
+      i;
 
   section = [0.2, 0.4, 0.6, 0.8];
 
   targetFunction = function(x) { return Math.sin(mathtool.toRadian(x)); };
 
-  p1 = {
-    x: 0,
-    y: targetFunction(0)
-  };
-  p2 = {
-    x: 1,
-    y: targetFunction(1)
-  };
+  dataPoints = [];
 
-  interpolationFunction = interpolations.linear(p1, p2);
+  for (i = 0; i <= 1; i++) {
+    dataPoints[i] = {
+      x: i,
+      y: targetFunction(i)
+    };
+  }
+
+  interpolationFunction = interpolations.linear(dataPoints);
 
   trueValues = section.map(function(x) {
     return targetFunction(x);

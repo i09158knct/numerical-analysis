@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="utf-8">
+
+<link href="css/nv.d3.css" rel="stylesheet" type="text/css">
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+<style>
+
+body {
+  overflow-y:scroll;
+}
+
+text {
+  font: 12px sans-serif;
+}
+
+svg {
+  display: block;
+  height: 500px;
+  min-width: 500px;
+  min-height: 500px;
+}
+
+</style>
+</head>
+<body>
+<div id="chart-r9-1">
+  <h2>r9-1</h2>
+  <svg></svg>
+  <div class="result">
+    <h4>結果</h4>
+  </div>
+  <hr>
+</div>
+<div id="chart-r9-2-1">
+  <h2>r9-2-1</h2>
+  <svg></svg>
+  <div class="result">
+    <h4>結果</h4>
+  </div>
+  <hr>
+</div>
+<div id="chart-r9-2-2">
+  <h2>r9-2-2</h2>
+  <svg></svg>
+  <div class="result">
+    <h4>結果</h4>
+  </div>
+  <hr>
+</div>
+<div id="chart-r9-2-3">
+  <h2>r9-2-3</h2>
+  <svg></svg>
+  <div class="result">
+    <h4>結果</h4>
+  </div>
+  <hr>
+</div>
+<div id="chart-r9-3">
+  <h2>r9-3</h2>
+  <svg></svg>
+  <div class="result">
+    <h4>結果</h4>
+  </div>
+  <hr>
+</div>
+
+
+<script src="js/lib/d3.v2.js"></script>
+<script src="js/lib/nv.d3.js"></script>
+<script src="js/lib/tooltip.js"></script>
+<script src="js/lib/utils.js"></script>
+<script src="js/lib/legend.js"></script>
+<script src="js/lib/axis.js"></script>
+<script src="js/lib/scatter.js"></script>
+<script src="js/lib/line.js"></script>
+<script src="js/lib/lineChart.js"></script>
+<script src="js/graph-util.js"></script>
+<script src="js/interpolations.js"></script>
+<script src="js/main.js"></script>
+<script src="js/lib/jquery.min.js"></script>
+
+<script>
+function addGraph(selector, data) {
+  nv.addGraph(function() {
+    var chart = nv.models.lineChart();
+
+    chart.xAxis
+      .tickFormat(d3.format(',.1f'));
+
+    chart.yAxis
+      .tickFormat(d3.format(',.1f'));
+
+    d3.select(selector)
+      .datum(data)
+      // .transition().duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+    // window.onresize = function() { d3.select(selector).call(chart) };
+
+    return chart;
+  });
+}
+
+function convertLogToTable(log) {
+  var lines = log.split("\n"),
+      i;
+
+  for (i in lines) {
+    if (i === '0') {
+      lines[i] =
+        '<tr><th>'+ lines[i].replace(/\t/g, '</th><th>') +'</th></tr>';
+    } else {
+      lines[i] = '<tr><td>'+ lines[i].replace(/\t/g, '</td><td>') +'</td></tr>';
+    }
+  }
+
+  return (
+    '<table class="table table-bordered table-condensed">' +
+    lines.join("") +
+    '</table>'
+  );
+}
+
+$(function(){
+  var results = main.results;
+  (function() {
+    var title,
+        result,
+        graphSkeletons,
+        graphOption,
+        startPoint,
+        endPoint,
+        interpolation;
+    for (title in results) {
+      result = results[title];
+      graphSkeletons = [];
+      startPoint = result.xList[0];
+      endPoint = result.xList[result.xList.length - 1];
+
+      graphOption = {
+        startPoint: startPoint,
+        endPoint: endPoint,
+        n: 100
+      };
+
+      graphSkeletons.push({
+        func: result.targetFunction,
+        option: graphOption,
+        key: "target"
+      });
+
+      for (interpolation in result.interpolations) {
+
+console.log(result.interpolations[interpolation])
+        graphSkeletons.push({
+          func: result.interpolations[interpolation],
+          option: graphOption,
+          key: interpolation
+        });
+      }
+      addGraph(
+        '#chart-'+ title +' svg',
+        graphUtil.buildData(graphSkeletons)
+      );
+
+      $('#chart-'+ title +' .result').append(convertLogToTable(result.log));
+    }
+  })();
+
+});
+</script>
+</body></html>

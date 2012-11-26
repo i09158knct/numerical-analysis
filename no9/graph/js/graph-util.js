@@ -40,7 +40,7 @@
 
     values = [];
 
-    // because to Floating-point error,
+    // because of Floating-point error,
     // `endPoint` data may not be included in `values`
     for (i = startPoint; i <= endPoint; i += step) {
       values.push({

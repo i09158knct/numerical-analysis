@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>No. 9's Extra</title>
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="/vendor/nv.d3/css/nv.d3.css" rel="stylesheet" type="text/css">
+  <style>
+  body {
+    overflow-y:scroll;
+  }
+
+  text {
+    font: 12px sans-serif;
+  }
+
+  svg {
+    width: 960px;
+    height: 512px;
+    display: block;
+  }
+
+  </style>
+  <script data-main="/app/config" src="/vendor/js/libs/require.js"></script>
+</head>
+
+<body>
+
+<div id="main">
+  <div id="graph-wrapper">
+    <svg></svg>
+  </div>
+  <div class="tabbable tabs-right">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#with-function" data-toggle="tab">With Function</a></li>
+      <li><a href="#with-data-points" data-toggle="tab">With Data Points</a></li>
+    </ul>
+    <div class="tab-content">
+
+      <form class="tab-pane active" id="with-function">
+        <button class="draw">Draw</button>
+        <table>
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td><label for="func">Target Function</label></td>
+              <td><textarea id="func" id="" cols="80" rows="10"></textarea></td>
+            </tr>
+            <tr>
+              <td><label for="start">Start Point</label></td>
+              <td><input id="start" type="number" value="-10"></td>
+            </tr>
+            <tr>
+              <td><label for="end">End Point</label></td>
+              <td><input id="end" type="number" value="10"></td>
+            </tr>
+            <tr>
+              <td><label for="number-of-data-points">N</label></td>
+              <td><input id="number-of-data-points" type="number" value="5" min="2"></td>
+            </tr>
+            <tr>
+              <td><label for="auto-redraw">Auto Redraw</label></td>
+              <td><input id="auto-redraw" type="checkbox" checked ></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+
+      <form class="tab-pane" id="with-data-points">
+        <button class="draw">Draw</button>
+        <table>
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td><label for="data-points">Data Points</label></td>
+              <td><textarea id="data-points" cols="80" rows="10"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

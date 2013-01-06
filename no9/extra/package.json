@@ -1,0 +1,16 @@
+{
+  "name": "na-no9-extra",
+  "version": "0.1.0",
+
+  "jam": {
+    "packageDir": "./vendor/jam",
+    "baseUrl": "./app",
+
+    "dependencies": {
+     "d3": "*",
+     "backbone": "*",
+     "jquery": "*",
+     "lodash": "*"
+    }
+  }
+}

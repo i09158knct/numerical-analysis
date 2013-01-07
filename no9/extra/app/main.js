@@ -90,7 +90,7 @@ require([
 
     $("#func").val([
       "function(x) {",
-      "  return 0.1*x * x + Math.sin(x);",
+      "  return 0.1 * x * x + Math.sin(x);",
       "}"
     ].join("\n"));
 

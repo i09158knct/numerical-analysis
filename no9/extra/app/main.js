@@ -57,7 +57,7 @@ require([
           numOfDataPoints = +this.$numOfDataPoints.val();
           dataPoints = this.buildDataPoints(func, start, end, numOfDataPoints);
         } catch (e) {
-          window.console(e);
+          window.console.log(e);
           window.alert(e);
           return;
         }
@@ -77,7 +77,7 @@ require([
         try {
           dataPoints = eval("(" + this.$dataPoints.val() + ")");
         } catch (e) {
-          window.console(e);
+          window.console.log(e);
           window.alert(e);
           return;
         }
